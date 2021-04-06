@@ -7,10 +7,10 @@ import (
 
 // Models the JSON representation of a Client's Appointment with a Trainer.
 type Appointment struct {
-	ID        int64     `json:"id"`
-	TrainerID int64     `json:"trainer_id"`
-	StartsAt  time.Time `json:"starts_at"`
-	EndsAt    time.Time `json:"ends_at"`
+	ID        int64     `json:"id,omitempty"`
+	TrainerID int64     `json:"trainer_id,omitempty"`
+	StartsAt  time.Time `json:"starts_at,omitempty"`
+	EndsAt    time.Time `json:"ends_at,omitempty"`
 }
 
 // Validate the presence of the fields (are non zero)
