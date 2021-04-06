@@ -50,7 +50,7 @@ func TestGetAvailableAppointments(t *testing.T) {
 			desc:  "invalid_params",
 			query: url.Values{ /* there are no params */ },
 			mock: &mock.Client{
-				AppointmentsReply: []*models.Appointment{},
+				Appointments: []*models.Appointment{},
 			},
 			expectedStatus: http.StatusBadRequest,
 		},
@@ -62,7 +62,7 @@ func TestGetAvailableAppointments(t *testing.T) {
 				queryParamKeyEndsAt:    []string{"2020-01-24T09:30:00-08:00"},
 			},
 			mock: &mock.Client{
-				AppointmentsReply: []*models.Appointment{},
+				Appointments: []*models.Appointment{},
 			},
 			expectedStatus:       http.StatusOK,
 			responseVerification: appointmentListResponseValidationFactory(0),
@@ -75,7 +75,7 @@ func TestGetAvailableAppointments(t *testing.T) {
 				queryParamKeyEndsAt:    []string{"2020-01-24T09:30:00-08:00"},
 			},
 			mock: &mock.Client{
-				AppointmentsReply: []*models.Appointment{
+				Appointments: []*models.Appointment{
 					{
 						ID:        1,
 						StartsAt:  startsAt,
@@ -130,7 +130,7 @@ func TestGetScheduledAppointments(t *testing.T) {
 				/* there are no params */
 			},
 			mock: &mock.Client{
-				AppointmentsReply: []*models.Appointment{},
+				Appointments: []*models.Appointment{},
 			},
 			expectedStatus: http.StatusBadRequest,
 		},
@@ -141,7 +141,7 @@ func TestGetScheduledAppointments(t *testing.T) {
 				queryParamKeyTrainerID: []string{"1"},
 			},
 			mock: &mock.Client{
-				AppointmentsReply: []*models.Appointment{},
+				Appointments: []*models.Appointment{},
 			},
 			expectedStatus:       http.StatusOK,
 			responseVerification: appointmentListResponseValidationFactory(0),
@@ -153,7 +153,7 @@ func TestGetScheduledAppointments(t *testing.T) {
 				queryParamKeyTrainerID: []string{"1"},
 			},
 			mock: &mock.Client{
-				AppointmentsReply: []*models.Appointment{
+				Appointments: []*models.Appointment{
 					{
 						ID:        1,
 						StartsAt:  startsAt,
@@ -224,10 +224,7 @@ func TestScheduleAppointment(t *testing.T) {
 				EndsAt:    endsAt,
 			},
 			mock: &mock.Client{
-				CreateReply: struct {
-					Appointment *models.Appointment
-					Error       error
-				}{nil, errors.New("timeout")},
+				Error: errors.New("timeout"),
 			},
 			expectedStatus: http.StatusInternalServerError,
 		},
@@ -240,15 +237,12 @@ func TestScheduleAppointment(t *testing.T) {
 				EndsAt:    endsAt,
 			},
 			mock: &mock.Client{
-				CreateReply: struct {
-					Appointment *models.Appointment
-					Error       error
-				}{&models.Appointment{
+				Appointment: &models.Appointment{
 					ID:        1,
 					TrainerID: 1,
 					StartsAt:  startsAt,
 					EndsAt:    endsAt,
-				}, nil},
+				},
 			},
 			expectedStatus: http.StatusCreated,
 			responseVerification: func(resp *http.Response) error {

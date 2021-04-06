@@ -12,7 +12,11 @@ func (h *Handler) getAvailableAppointments(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	appointments := h.ds.AvailableAppointments(params.TrainerID, params.StartsAt, params.EndsAt)
+	appointments, err := h.ds.AvailableAppointments(params.TrainerID, params.StartsAt, params.EndsAt)
+	if err != nil {
+		statusError(w, http.StatusBadRequest)
+		return
+	}
 
 	json.NewEncoder(w).Encode(appointments)
 }

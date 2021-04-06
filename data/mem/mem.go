@@ -3,12 +3,12 @@ package mem
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"sync"
 	"time"
 
 	"github.com/aren55555/future-hw/data"
+	"github.com/aren55555/future-hw/data/compute"
 	"github.com/aren55555/future-hw/models"
 )
 
@@ -75,11 +75,9 @@ func (c *client) seed(appointments []*models.Appointment) {
 	c.nextID = maxID + 1
 }
 
-func (c *Client) AvailableAppointments(trainerID int64, startsAt, endsAt time.Time) []*models.Appointment {
+func (c *Client) AvailableAppointments(trainerID int64, startsAt, endsAt time.Time) ([]*models.Appointment, error) {
 	scheduled := c.GetAppointmentsByTrainer(trainerID)
-	// TODO: compute availability by walking and computing the leftover aviailable ranges
-	fmt.Println(scheduled)
-	return []*models.Appointment{}
+	return compute.AvailableTimes(trainerID, startsAt, endsAt, scheduled)
 }
 
 func (c *Client) GetAppointmentsByTrainer(trainerID int64) []*models.Appointment {
