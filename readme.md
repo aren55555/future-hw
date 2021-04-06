@@ -4,7 +4,7 @@ Implementation of a go program out to solve the problem discussed in `task.md`.
 
 * `./cmd/main.go` contains the entry point to the application
 * `./api/...` contains an HTTP Handler and implements the RESTful related logic
-* `./data/...` contains an interface definition of what the DB service is expected to provide. It also contains an in memory mock and a filesystem implementation of said interface
+* `./data/...` contains an interface definition of what the DB service is expected to provide. It also contains an in memory implementation of the Data Store and it contain a stub/mock for unit testing
 * `./helpers/...` contains any common utils for testing
 * `./models/...` contains some code related to  modelling and validating the input JSON file format of the program
 
@@ -15,6 +15,7 @@ Implementation of a go program out to solve the problem discussed in `task.md`.
 ### Create an Appointment
 
 #### Request:
+
 ```
 curl \
   --location \
@@ -29,7 +30,8 @@ curl \
 ```
 
 #### Response:
-```
+
+```json
 {
     "id": 1,
     "trainer_id": 1,
@@ -41,6 +43,7 @@ curl \
 ### Trainer's Scheduled Appointments
 
 #### Request:
+
 ```
 curl \
   --location \
@@ -48,7 +51,8 @@ curl \
 ```
 
 #### Response:
-```
+
+```json
 [
     {
         "id": 1,
@@ -61,8 +65,37 @@ curl \
 
 ### Trainer's Available Appointments
 
+#### Request:
+
 ```
 curl \
   --location \
-  --request GET 'localhost:8080/api?trainer_id=1&starts_at=2020-01-24T09:00:00-08:00&ends_at=2020-01-24T11:30:00-08:00' \
+  --request GET 'localhost:8080/api?trainer_id=1&starts_at=2020-01-24T09:00:00-08:00&ends_at=2020-01-24T11:30:00-08:00'
+```
+
+#### Response:
+
+```json
+[
+    {
+        "trainer_id": 1,
+        "starts_at": "2020-01-24T09:30:00-08:00",
+        "ends_at": "2020-01-24T10:00:00-08:00"
+    },
+    {
+        "trainer_id": 1,
+        "starts_at": "2020-01-24T10:00:00-08:00",
+        "ends_at": "2020-01-24T10:30:00-08:00"
+    },
+    {
+        "trainer_id": 1,
+        "starts_at": "2020-01-24T10:30:00-08:00",
+        "ends_at": "2020-01-24T11:00:00-08:00"
+    },
+    {
+        "trainer_id": 1,
+        "starts_at": "2020-01-24T11:00:00-08:00",
+        "ends_at": "2020-01-24T11:30:00-08:00"
+    }
+]
 ```
