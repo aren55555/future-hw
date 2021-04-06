@@ -5,6 +5,8 @@ import (
 	"reflect"
 	"testing"
 	"time"
+
+	"github.com/aren55555/future-hw/helpers"
 )
 
 const (
@@ -22,13 +24,6 @@ const (
 ]`
 )
 
-func must(t time.Time, err error) time.Time {
-	if err != nil {
-		panic(err)
-	}
-	return t
-}
-
 // Verifies I've modelled the JSON correctly.
 func TestParse(t *testing.T) {
 	appointments := []Appointment{}
@@ -36,13 +31,13 @@ func TestParse(t *testing.T) {
 		t.Fatal(err)
 	}
 	if got, want := len(appointments), 10; got != want {
-		t.Fatalf("JSON appointmnets length, got %v, want %v", got, want)
+		t.Fatalf("JSON appointments length, got %v, want %v", got, want)
 	}
 	if got, want := appointments[0], (Appointment{
 		ID:        1,
 		TrainerID: 1,
-		StartsAt:  must(time.Parse(time.RFC3339, "2020-01-24T09:00:00-08:00")),
-		EndsAt:    must(time.Parse(time.RFC3339, "2020-01-24T09:30:00-08:00")),
+		StartsAt:  helpers.TimeMust(time.Parse(time.RFC3339, "2020-01-24T09:00:00-08:00")),
+		EndsAt:    helpers.TimeMust(time.Parse(time.RFC3339, "2020-01-24T09:30:00-08:00")),
 	}); !reflect.DeepEqual(got, want) {
 		t.Fatalf("expected to be the same: got %v, want %v", got, want)
 	}

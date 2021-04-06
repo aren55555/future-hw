@@ -45,5 +45,3 @@ appointments.json contains the current list of appointments in this format:
 ]
 
 You can store appointments in this file, a database or any back end storage you prefer.
-Future Backend Exercise (1) (1).txt
-Displaying appointments (1) (1) (1).json.
