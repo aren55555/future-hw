@@ -61,4 +61,8 @@ curl \
 
 ### Trainer's Available Appointments
 
-Yet to be implemented!
+```
+curl \
+  --location \
+  --request GET 'localhost:8080/api?trainer_id=1&starts_at=2020-01-24T09:00:00-08:00&ends_at=2020-01-24T11:30:00-08:00' \
+```
