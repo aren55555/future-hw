@@ -55,6 +55,18 @@ func TestGetAvailableAppointments(t *testing.T) {
 			expectedStatus: http.StatusBadRequest,
 		},
 		{
+			desc: "data_store_error",
+			query: url.Values{
+				queryParamKeyTrainerID: []string{"1"},
+				queryParamKeyStartsAt:  []string{"2020-01-24T09:00:00-08:00"},
+				queryParamKeyEndsAt:    []string{"2020-01-24T09:30:00-08:00"},
+			},
+			mock: &mock.Client{
+				Error: errors.New("invalid"),
+			},
+			expectedStatus: http.StatusBadRequest,
+		},
+		{
 			desc: "no_available_appointments",
 			query: url.Values{
 				queryParamKeyTrainerID: []string{"1"},
