@@ -94,6 +94,9 @@ func (c *Client) GetAppointmentsByTrainer(trainerID int64) []*models.Appointment
 }
 
 func (c *Client) CreateAppointment(trainerID, _ int64, startsAt, endsAt time.Time) (*models.Appointment, error) {
+	// TODO: more validation is required here was the minute a :00 or :30? Was the timeslot even available. For now
+	//       the implementation is naïve in that the list available will only provide the client with a menu of allowable
+	//       options - but there's nothing really stopping the client from misbehaving.
 	c.lock.Lock()
 	defer c.lock.Unlock()
 
